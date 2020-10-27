@@ -13,4 +13,19 @@ public class TestModel {
         assertEquals(Model.calcIncome(10, 10, 10, 8), 900, 0);
         assertEquals(Model.calcIncome(11, 10, 10, 8), 980, 0);
     }
+
+    @Test
+    public void testGetTicketPrice() {
+        assertEquals(Model.getTicketPrice(10, 10, 10, 10, 1), 10, 0);
+        assertEquals(Model.getTicketPrice(10, 10, 10, 8, 1), 10, 0);
+        assertEquals(Model.getTicketPrice(9, 9, 10, 8, 9), 8, 0);
+        assertEquals(Model.getTicketPrice(9, 9, 8, 10, 9), 10, 0);
+
+        assertEquals(Model.getTicketPrice(11, 10, 10, 8, 11), 8, 0);
+        assertEquals(Model.getTicketPrice(11, 10, 10, 8, 6), 8, 0);
+        assertEquals(Model.getTicketPrice(11, 10, 10, 8, 5), 10, 0);
+
+        assertEquals(Model.getTicketPrice(2, 10, 10, 8, 1), 10, 0);
+        assertEquals(Model.getTicketPrice(2, 10, 10, 8, 2), 10, 0);
+    }
 }
