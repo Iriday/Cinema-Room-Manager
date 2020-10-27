@@ -1,16 +1,27 @@
 import java.util.Arrays;
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 
 public class View {
+    public static int[] getCinemaRoomSize() {
+        var scn = new Scanner(System.in);
+        return new int[]{getNum(scn, "Enter the number of rows:"), getNum(scn, "Enter the number of seats in each row:")};
+    }
+
+    private static int getNum(Scanner scn, String msg) {
+        System.out.println(msg);
+        return scn.nextInt();
+    }
+
     public static void showCinemaRoom(int[][] room) {
         System.out.println("Cinema:");
         System.out.println(formatCinemaRoom(room, "S"));
     }
 
-    public static String formatCinemaRoom(int[][] room, String emptySeatSymbol) {
+    private static String formatCinemaRoom(int[][] room, String emptySeatSymbol) {
         int firstColWidth = String.valueOf(room.length).length() + 1;
         int colWidth = String.valueOf(room[0].length).length() + 1;
         var sb = new StringBuilder(adjustLen(" ", firstColWidth));
@@ -28,5 +39,9 @@ public class View {
 
     private static String adjustLen(Object str, int len) {
         return String.format("%" + len + "s", str.toString());
+    }
+
+    public static void showIncome(double income) {
+        System.out.println("Total income:\n$" + income);
     }
 }
