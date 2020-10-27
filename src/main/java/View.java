@@ -4,8 +4,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-
 public class View {
+    public static int showMainMenu() {
+        return getNum(new Scanner(System.in), """
+                
+                1. Show the seats
+                2. Buy a ticket
+                0. Exit""");
+    }
+
     public static int[] getCinemaRoomSize() {
         var scn = new Scanner(System.in);
         return new int[]{getNum(scn, "Enter the number of rows:"), getNum(scn, "Enter the number of seats in each row:")};
@@ -39,6 +46,7 @@ public class View {
                 .mapToObj(v -> adjustLen(v == 0 ? freeSeatSymbol : occupiedSeatSymbol, colWidth))
                 .collect(Collectors.joining("", adjustLen(rowNum.incrementAndGet(), firstColWidth), "\n"))));
 
+        sb.deleteCharAt(sb.length() - 1);
         return sb.toString();
     }
 
