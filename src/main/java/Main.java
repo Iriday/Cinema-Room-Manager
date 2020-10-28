@@ -1,5 +1,5 @@
 public class Main {
     public static void main(String[] args) {
-        Controller.run();
+        new Controller(new View(), new Model()).run();
     }
 }

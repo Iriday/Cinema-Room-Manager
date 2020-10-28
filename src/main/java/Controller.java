@@ -1,20 +1,26 @@
 public class Controller {
-    public static void run() {
-        int[] numOfRowsSeats = View.getCinemaRoomSize();
-        int[][] room = Model.generateCinemaRoom(numOfRowsSeats[0], numOfRowsSeats[1]);
+    private final View view;
+    private final Model model;
 
-        while (true) {
-            switch (View.showMainMenu()) {
-                case 1 -> View.showCinemaRoom(room);
-                case 2 -> {
-                    int[] seatCoords = View.getSeatCoords();
-                    double ticketPrice = Model.getTicketPrice(numOfRowsSeats[0], numOfRowsSeats[1], 10, 8, seatCoords[0]);
-                    Model.markSeatAsOccupied(room, seatCoords[0], seatCoords[1]);
-                    View.showTicketPrice(ticketPrice);
-                }
-                case 0 -> System.exit(0);
-            }
-        }
-//        View.showIncome(Model.calcIncome(numOfRowsSeats[0], numOfRowsSeats[1], 10, 8));
+    public Controller(View view, Model model) {
+        this.view = view;
+        this.model = model;
+        this.view.initialize(this);
+        int[] numOfRowsSeats = view.getCinemaRoomSize();
+        this.model.initialize(numOfRowsSeats[0], numOfRowsSeats[1], 10, 8);
+    }
+
+    public void run() {
+        view.showMainMenu();
+    }
+
+    public int[][] getCinemaRoom() {
+        return model.getCinemaRoom();
+    }
+
+    public double buyTicket(int row, int seat) {
+        double ticketPrice = model.getTicketPrice(row);
+        model.markSeatAsOccupied(row, seat);
+        return ticketPrice;
     }
 }

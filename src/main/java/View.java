@@ -5,21 +5,38 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class View {
-    public static int showMainMenu() {
-        return getNum(new Scanner(System.in), """
-                
-                1. Show the seats
-                2. Buy a ticket
-                0. Exit""");
+    private Controller controller;
+    private Scanner scn;
+
+    public void initialize(Controller controller) {
+        this.controller = controller;
+        this.scn = new Scanner(System.in);
     }
 
-    public static int[] getCinemaRoomSize() {
-        var scn = new Scanner(System.in);
+    public void showMainMenu() {
+        while (true) {
+            int option = getNum(scn, """
+                                    
+                    1. Show the seats
+                    2. Buy a ticket
+                    0. Exit""");
+            switch (option) {
+                case 1 -> showCinemaRoom(controller.getCinemaRoom());
+                case 2 -> {
+                    int[] seatCoords = getSeatCoords(scn);
+                    double ticketPrice = controller.buyTicket(seatCoords[0], seatCoords[1]);
+                    View.showTicketPrice(ticketPrice);
+                }
+                case 0 -> System.exit(0);
+            }
+        }
+    }
+
+    public int[] getCinemaRoomSize() {
         return new int[]{getNum(scn, "Enter the number of rows:"), getNum(scn, "Enter the number of seats in each row:")};
     }
 
-    public static int[] getSeatCoords() {
-        var scn = new Scanner(System.in);
+    private static int[] getSeatCoords(Scanner scn) {
         return new int[]{getNum(scn, "Enter a row number:"), getNum(scn, "Enter a seat number in that row:")};
     }
 
@@ -28,7 +45,7 @@ public class View {
         return scn.nextInt();
     }
 
-    public static void showCinemaRoom(int[][] room) {
+    private static void showCinemaRoom(int[][] room) {
         System.out.println("\nCinema:");
         System.out.println(formatCinemaRoom(room, "S", "B"));
     }
@@ -54,11 +71,11 @@ public class View {
         return String.format("%" + len + "s", str.toString());
     }
 
-    public static void showIncome(double income) {
+    private static void showTotalIncome(double income) {
         System.out.println("Total income:\n$" + income);
     }
 
-    public static void showTicketPrice(double price) {
+    private static void showTicketPrice(double price) {
         System.out.println("\nTicket price: $" + price);
     }
 }
