@@ -1,3 +1,5 @@
+import java.util.OptionalDouble;
+
 public class Controller {
     private final View view;
     private final Model model;
@@ -18,7 +20,7 @@ public class Controller {
         return model.getCinemaRoom();
     }
 
-    public double buyTicket(int row, int seat) {
+    public OptionalDouble buyTicket(int row, int seat) throws NoTicketsLeftException {
         return model.buyTicket(row, seat);
     }
 

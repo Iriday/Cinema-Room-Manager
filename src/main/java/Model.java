@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.OptionalDouble;
 import java.util.stream.Stream;
 
 public class Model {
@@ -22,11 +23,22 @@ public class Model {
         return room;
     }
 
-    public double buyTicket(int row, int seat) {
+    public OptionalDouble buyTicket(int row, int seat) throws NoTicketsLeftException {
+        if (isAllTicketsSold()) throw new NoTicketsLeftException();
+        if (!isSeatEmpty(room, row, seat)) return OptionalDouble.empty();
+
         markSeatAsOccupied(room, row, seat);
         double ticketPrice = calcTicketPrice(rows, seats, frontSeatsPrice, backSeatsPrice, row);
         currentIncome += ticketPrice;
-        return ticketPrice;
+        return OptionalDouble.of(ticketPrice);
+    }
+
+    private boolean isAllTicketsSold() {
+        return getNumOfPurchasedTickets() == rows * seats;
+    }
+
+    public static boolean isSeatEmpty(int[][] room, int row, int seat) {
+        return room[row - 1][seat - 1] == 0;
     }
 
     public static void markSeatAsOccupied(int[][] room, int row, int seat) {
