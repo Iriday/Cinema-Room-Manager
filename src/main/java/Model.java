@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class Model {
@@ -6,6 +7,7 @@ public class Model {
     private int seats;
     private double frontSeatsPrice;
     private double backSeatsPrice;
+    private double currentIncome;
 
     public void initialize(int rows, int seats, double frontSeatsPrice, double backSeatsPrice) {
         this.room = generateCinemaRoom(rows, seats);
@@ -13,18 +15,22 @@ public class Model {
         this.seats = seats;
         this.frontSeatsPrice = frontSeatsPrice;
         this.backSeatsPrice = backSeatsPrice;
+        this.currentIncome = 0;
     }
 
     public int[][] getCinemaRoom() {
         return room;
     }
 
-    public void markSeatAsOccupied(int row, int seat) {
-        room[row - 1][seat - 1] = 1;
+    public double buyTicket(int row, int seat) {
+        markSeatAsOccupied(room, row, seat);
+        double ticketPrice = calcTicketPrice(rows, seats, frontSeatsPrice, backSeatsPrice, row);
+        currentIncome += ticketPrice;
+        return ticketPrice;
     }
 
-    public double getTicketPrice(int row) {
-        return calcTicketPrice(rows, seats, frontSeatsPrice, backSeatsPrice, row);
+    public static void markSeatAsOccupied(int[][] room, int row, int seat) {
+        room[row - 1][seat - 1] = 1;
     }
 
     public double getTotalIncome() {
@@ -44,5 +50,17 @@ public class Model {
 
     private static double calcTicketPrice(int rows, int seats, double frontSeatsPrice, double backSeatsPrice, int row) {
         return rows * seats < 60 ? frontSeatsPrice : (row <= rows / 2 ? frontSeatsPrice : backSeatsPrice);
+    }
+
+    public double getCurrentIncome() {
+        return currentIncome;
+    }
+
+    public int getNumOfPurchasedTickets() {
+        return (int) Arrays.stream(room).flatMapToInt(Arrays::stream).filter(v -> v != 0).count();
+    }
+
+    public double getNumOfPurchasedTicketsAsPercentage() {
+        return getNumOfPurchasedTickets() / (double) (rows * seats) * 100;
     }
 }

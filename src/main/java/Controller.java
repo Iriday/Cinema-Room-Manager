@@ -19,8 +19,22 @@ public class Controller {
     }
 
     public double buyTicket(int row, int seat) {
-        double ticketPrice = model.getTicketPrice(row);
-        model.markSeatAsOccupied(row, seat);
-        return ticketPrice;
+        return model.buyTicket(row, seat);
+    }
+
+    public int getNumOfPurchasedTickets() {
+        return model.getNumOfPurchasedTickets();
+    }
+
+    public double getNumOfPurchasedTicketsAsPercentage() {
+        return model.getNumOfPurchasedTicketsAsPercentage();
+    }
+
+    public double getCurrentIncome() {
+        return model.getCurrentIncome();
+    }
+
+    public double getTotalIncome() {
+        return model.getTotalIncome();
     }
 }

@@ -19,6 +19,7 @@ public class View {
                                     
                     1. Show the seats
                     2. Buy a ticket
+                    3. Statistic
                     0. Exit""");
             switch (option) {
                 case 1 -> showCinemaRoom(controller.getCinemaRoom());
@@ -27,6 +28,7 @@ public class View {
                     double ticketPrice = controller.buyTicket(seatCoords[0], seatCoords[1]);
                     View.showTicketPrice(ticketPrice);
                 }
+                case 3 -> showStatistic(controller.getNumOfPurchasedTickets(), controller.getNumOfPurchasedTicketsAsPercentage(), controller.getCurrentIncome(), controller.getTotalIncome());
                 case 0 -> System.exit(0);
             }
         }
@@ -71,11 +73,17 @@ public class View {
         return String.format("%" + len + "s", str.toString());
     }
 
-    private static void showTotalIncome(double income) {
-        System.out.println("Total income:\n$" + income);
-    }
-
     private static void showTicketPrice(double price) {
         System.out.println("\nTicket price: $" + price);
+    }
+
+    private static void showStatistic(int numOfPurchasedTickets, double numOfPurchasedTicketsAsPercentage, double currentIncome, double totalIncome) {
+        System.out.format("""
+                                
+                Number of purchased tickets: %d
+                Percentage: %.2f%s
+                Current income: $%.2f
+                Total income $%.2f
+                """, numOfPurchasedTickets, numOfPurchasedTicketsAsPercentage, "%", currentIncome, totalIncome);
     }
 }
